@@ -5,6 +5,8 @@ from app.data_base import db
 from app.views.directors import directors_ns
 from app.views.genres import genres_ns
 from app.views.movies import movies_ns
+from app.views.auth import auth_ns
+from app.views.user import user_ns
 
 
 def create_app(config: Config) -> Flask:
@@ -21,10 +23,14 @@ def configure_app(aplication: Flask):
     api.add_namespace(movies_ns)
     api.add_namespace(genres_ns)
     api.add_namespace(directors_ns)
+    api.add_namespace(auth_ns)
+    api.add_namespace(user_ns)
 
 
 if __name__ == '__main__':
     app_config = Config()
     app = create_app(app_config)
     configure_app(app)
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
